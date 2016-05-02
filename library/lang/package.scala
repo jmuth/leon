@@ -7,6 +7,7 @@ import scala.language.implicitConversions
 
 package object lang {
 
+  @cCode.drop
   implicit class BooleanDecorations(val underlying: Boolean) {
     @inline
     def holds : Boolean = {
@@ -20,7 +21,7 @@ package object lang {
       if (underlying) that else true
     }
   }
-  
+
   @ignore def forall[A](p: A => Boolean): Boolean = sys.error("Can't execute quantified proposition")
   @ignore def forall[A,B](p: (A,B) => Boolean): Boolean = sys.error("Can't execute quantified proposition")
   @ignore def forall[A,B,C](p: (A,B,C) => Boolean): Boolean = sys.error("Can't execute quantified proposition")
@@ -47,12 +48,13 @@ package object lang {
     def passes(tests : A => B ) : Boolean =
       try { tests(in) == out } catch { case _ : MatchError => true }
   }
-  
+
   @ignore
   def byExample[A, B](in: A, out: B): Boolean = {
     sys.error("Can't execute by example proposition")
   }
-  
+
+  @cCode.drop
   implicit class SpecsDecorations[A](val underlying: A) {
     @ignore
     def computes(target: A) = {
@@ -60,7 +62,7 @@ package object lang {
     } ensuring {
       res => res == target
     }
-    
+
     @ignore // Programming by example: ???[String] ask input
     def ask[I](input : I) = {
       underlying
@@ -84,8 +86,61 @@ package object lang {
   }
 
   @extern
+  @cCode.function(
+    code = """
+      |void __FUNCTION__(char* s) {
+      |  printf("%s", s);
+      |}
+      """,
+    includes = "stdio.h"
+  )
   def print(x: String): Unit = {
     scala.Predef.print(x)
+  }
+
+  def println(s: String): Unit = {
+    print(s)
+    print('\n')
+  }
+
+  @extern
+  @cCode.function(
+   code = """
+     |void __FUNCTION__(int32_t x) {
+     |  printf("%"PRIi32, x);
+     |}
+     """,
+    includes = "inttypes.h:stdio.h"
+  )
+  def print(x: Int): Unit = {
+    scala.Predef.print(x)
+  }
+
+  def println(x: Int): Unit = {
+    print(x)
+    print('\n')
+  }
+
+  @extern
+  @cCode.function(
+    code = """
+      |void __FUNCTION__(char c) {
+      |  printf("%c", c);
+      |}
+      """,
+    includes = "stdio.h"
+  )
+  def print(c: Char): Unit = {
+    scala.Predef.print(c)
+  }
+
+  def println(c: Char): Unit = {
+    print(c)
+    print('\n')
+  }
+
+  def println(): Unit = {
+    print('\n')
   }
 
 }
