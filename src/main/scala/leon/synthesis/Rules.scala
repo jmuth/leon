@@ -46,6 +46,8 @@ object Rules {
     Ground,
     CaseSplit,
     IndependentSplit,
+    HOFDecomp,
+    unused.TEGIS,
     IfSplit,
     InputSplit,
     UnusedInput,
