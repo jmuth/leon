@@ -226,7 +226,7 @@ class ExprInstrumenter(funMap: Map[FunDef, FunDef], serialInst: SerialInstrument
   def tupleifyRecur(e: Expr, subs: Seq[Expr], recons: Seq[Expr] => Expr, subeVals: List[Expr],
                     subeInsts: Map[Instrumentation, List[Expr]])(implicit letIdMap: Map[Identifier, Identifier]): Expr = {
     //note: subs.size should be zero if e is a terminal
-    if (subs.size == 0) {
+    if (subs.isEmpty) {
       e match {
         case v @ Variable(id) =>
           val valPart = if (letIdMap.contains(id)) {
@@ -345,7 +345,7 @@ class ExprInstrumenter(funMap: Map[FunDef, FunDef], serialInst: SerialInstrument
             }
             MatchCase(pattern, guard, newExpr)
           }
-          if (mCases.length == 0) Seq[MatchCase]()
+          if (mCases.isEmpty) Seq[MatchCase]()
           else {
             transformMatchCase(mCases.head) +: transformMatchCaseList(mCases.tail)
           }

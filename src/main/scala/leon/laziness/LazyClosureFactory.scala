@@ -55,13 +55,13 @@ class LazyClosureFactory(p: Program) {
             throw new IllegalStateException(s"Type parameters of the lazy/memoized operation ${op.id.name}" +
               "should match the type parameters of the return type of the operation")
         }
-        if(ops.size >= 2) {
+        if (ops.size >= 2) {
           ops.tail.forall(op => isMemoized(op) == isMemoized(ops.head))
         }
         val absTParams = (1 to tpcount).map(i => TypeParameterDef(TypeParameter.fresh("T" + i)))
         tpename -> new AbstractClassDef(FreshIdentifier(typeNameToADTName(tpename), Untyped),
           absTParams, None)
-    }.toMap
+    }
     var opToAdt = Map[FunDef, CaseClassDef]()
     val tpeToADT = tpeToLazyops map {
       case (tpename, ops) =>

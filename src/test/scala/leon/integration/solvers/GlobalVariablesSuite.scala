@@ -45,7 +45,7 @@ class GlobalVariablesSuite extends LeonTestSuiteWithProgram with ExpressionsDSL 
 
       pgm.lookup("GlobalVariables.test") match {
         case Some(fd: FunDef) =>
-          val b0 = FreshIdentifier("B", BooleanType);
+          val b0 = FreshIdentifier("B", BooleanType)
           fd.body = Some(IfExpr(b0.toVariable, bi(1), bi(-1)))
 
           val cnstr = LessThan(FunctionInvocation(fd.typed, Seq(bi(42))), bi(0))

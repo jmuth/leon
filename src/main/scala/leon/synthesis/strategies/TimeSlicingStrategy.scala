@@ -22,7 +22,7 @@ class TimeSlicingStrategy(ctx: LeonContext) extends Strategy {
     }
   }
 
-  var tstart: Long = 0;
+  var tstart: Long = 0
 
   override def beforeExpand(n: Node): Unit = {
     super.beforeExpand(n)

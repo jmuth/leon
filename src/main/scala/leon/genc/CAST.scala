@@ -53,7 +53,7 @@ object CAST { // C Abstract Syntax Tree
   case class Id(name: String) extends Def {
     // `|` is used as the margin delimiter and can cause trouble in some situations
     def fixMargin =
-      if (name.size > 0 && name(0) == '|') "| " + name
+      if (name.nonEmpty && name(0) == '|') "| " + name
       else name
   }
 
@@ -252,7 +252,7 @@ object CAST { // C Abstract Syntax Tree
 
       val compound = Compound(stmts filterNot isNoStmt)
       compound match {
-        case Compound(stmts) if stmts.length == 0 => NoStmt
+        case Compound(stmts) if stmts.isEmpty => NoStmt
         case Compound(stmts) if stmts.length == 1 => stmts.head
         case compound                             => compound
       }

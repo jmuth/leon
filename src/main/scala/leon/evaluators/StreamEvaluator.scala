@@ -183,7 +183,7 @@ class StreamEvaluator(ctx: LeonContext, prog: Program)
                 }
               }
 
-              val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.map(_._2).flatten)
+              val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.flatMap(_._2))
               andJoin(domainMap.toSeq.map { case (id, dom) =>
                 orJoin(dom.toSeq.map { case (path, value) =>
                   // @nv: Note that equality is allowed here because of first-order quantifiers.

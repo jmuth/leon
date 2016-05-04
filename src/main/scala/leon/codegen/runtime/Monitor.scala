@@ -76,9 +76,9 @@ class StdMonitor(unit: CompilationUnit, invocationsMax: Int, bodies: ScalaMap[Id
   def onInvocation(): Unit = {
     if (invocationsMax >= 0) {
       if (invocations < invocationsMax) {
-        invocations += 1;
+        invocations += 1
       } else {
-        throw new LeonCodeGenEvaluationException("Maximum number of invocations reached ("+invocationsMax+").");
+        throw new LeonCodeGenEvaluationException("Maximum number of invocations reached ("+invocationsMax+").")
       }
     }
   }
@@ -258,7 +258,7 @@ class StdMonitor(unit: CompilationUnit, invocationsMax: Int, bodies: ScalaMap[Id
             }
           }
 
-          val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.map(_._2).flatten)
+          val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.flatMap(_._2))
           andJoin(domainMap.toSeq.map { case (id, dom) =>
             orJoin(dom.toSeq.map { case (path, value) =>
               // @nv: Note that we know id.getType is first-order since quantifiers can only

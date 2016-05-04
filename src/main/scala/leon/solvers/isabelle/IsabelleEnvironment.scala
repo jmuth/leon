@@ -50,7 +50,7 @@ object IsabelleEnvironment {
         case None =>
           None
       }
-    }.toList
+    }
 
     context.reporter.info(s"Preparing Isabelle setup (this might take a while) ...")
     val setup = Setup.defaultSetup(version)

@@ -23,7 +23,7 @@ class WrappedStrategy(underlying: Strategy) extends Strategy {
   }
 
   override def afterExpand(n: Node) = {
-    underlying.afterExpand(n);
+    underlying.afterExpand(n)
   }
 
   override def interrupt() = underlying.interrupt()

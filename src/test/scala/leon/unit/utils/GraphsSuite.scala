@@ -189,7 +189,7 @@ class GraphsSuite extends LeonTestSuite {
   }
 
   def assertBefore[T](s: Seq[T])(n1: T, n2: T) {
-    assert(s.indexOf(n1) < s.indexOf(n2), s"Node '$n1' should be before '$n2'");
+    assert(s.indexOf(n1) < s.indexOf(n2), s"Node '$n1' should be before '$n2'")
   }
 
   test("Graphs top-sort 1") { ctx =>

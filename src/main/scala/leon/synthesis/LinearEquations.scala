@@ -60,8 +60,8 @@ object LinearEquations {
   def linearSet(evaluator: Evaluator, as: Set[Identifier], coef: Array[BigInt]): Array[Array[BigInt]] = {
 
     val K = Array.ofDim[BigInt](coef.length, coef.length-1)
-    for(i <- 0 until K.length) {
-      for(j <- 0 until K(i).length) {
+    for(i <- K.indices) {
+      for(j <- K(i).indices) {
         if(i < j)
           K(i)(j) = 0
         else if(i == j) {

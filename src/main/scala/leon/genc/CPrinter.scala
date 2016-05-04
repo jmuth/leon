@@ -142,7 +142,7 @@ class CPrinter(val sb: StringBuffer = new StringBuffer) {
       for ((id, stmt) <- args.init) {
         c".$id = $stmt, "
       }
-      if (!args.isEmpty) {
+      if (args.nonEmpty) {
         val (id, stmt) = args.last
         c".$id = $stmt "
       }

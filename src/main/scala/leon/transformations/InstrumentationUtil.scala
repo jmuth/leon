@@ -77,7 +77,7 @@ object InstUtil {
 
   def userFunctionName(fd: FunDef) = {
     val splits = fd.id.name.split("-")
-    if(!splits.isEmpty) splits(0)
+    if(splits.nonEmpty) splits(0)
     else ""
   }
 
@@ -134,7 +134,7 @@ object InstUtil {
     val instExprs = InstTypes.map(getInstExpr(fd, _)).collect {
       case Some(inste) => inste
     }.toSet
-    !instExprs.isEmpty && isArithmeticRelation(e).get &&
+    instExprs.nonEmpty && isArithmeticRelation(e).get &&
       exists {
         case sub: TupleSelect => instExprs(sub)
         case _                => false

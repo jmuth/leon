@@ -104,7 +104,7 @@ class TypeRectifier(p: Program, clFactory: LazyClosureFactory) {
           val rep =
             if (concRep.isDefined) // there exists a concrete type ?
               concRep.get
-            else if (!candReps.isEmpty)
+            else if (candReps.nonEmpty)
               candReps.head
             else
               throw new IllegalStateException(s"Cannot find a non-placeholder in equivalence class $tpclass for fundef: \n $fd")

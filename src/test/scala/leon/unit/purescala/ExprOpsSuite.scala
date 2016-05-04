@@ -212,22 +212,22 @@ class ExprOpsSuite extends LeonTestSuite with helpers.WithLikelyEq with helpers.
 
     val f1 = And(Seq(eq, lt1, lt2, lt3))
     val (eq1, r1) = extractEquals(f1)
-    assert(eq1 != None)
+    assert(eq1.isDefined)
     assert(eq1.get === eq)
     assert(extractEquals(r1)._1 === None)
 
     val f2 = And(Seq(lt1, lt2, eq, lt3))
     val (eq2, r2) = extractEquals(f2)
-    assert(eq2 != None)
+    assert(eq2.isDefined)
     assert(eq2.get === eq)
     assert(extractEquals(r2)._1 === None)
 
     val f3 = And(Seq(lt1, eq, lt2, lt3, eq))
     val (eq3, r3) = extractEquals(f3)
-    assert(eq3 != None)
+    assert(eq3.isDefined)
     assert(eq3.get === eq)
     val (eq4, r4) = extractEquals(r3)
-    assert(eq4 != None)
+    assert(eq4.isDefined)
     assert(eq4.get === eq)
     assert(extractEquals(r4)._1 === None)
   }

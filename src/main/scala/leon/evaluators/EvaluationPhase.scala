@@ -27,7 +27,7 @@ object EvaluationPhase extends UnitPhase[Program] {
       filterInclusive(evalFuns.map(fdMatcher(program)), None)
     }
 
-    val toEvaluate = funDefsFromMain(program).toList.filter(_.params.size == 0).filter(fdFilter).sortWith((fd1, fd2) => fd1.getPos < fd2.getPos)
+    val toEvaluate = funDefsFromMain(program).toList.filter(_.params.isEmpty).filter(fdFilter).sortWith((fd1, fd2) => fd1.getPos < fd2.getPos)
 
     if (toEvaluate.isEmpty) reporter.warning("No ground functions found with the given names")
 

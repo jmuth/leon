@@ -138,8 +138,8 @@ class UFADTEliminator(ctx: LeonContext, program: Program) {
             predEval(Equals(lvar, rvar))
           })
           // return `false` if at least one argument is false
-          if (antsEvals.exists(_ == Some(false))) Some(false)
-          else if (antsEvals.exists(!_.isDefined)) None // here, we cannot decide if the call is true or false
+          if (antsEvals.contains(Some(false))) Some(false)
+          else if (antsEvals.exists(_.isEmpty)) None // here, we cannot decide if the call is true or false
           else Some(true)
         case r => r
       }
@@ -214,7 +214,7 @@ class UFADTEliminator(ctx: LeonContext, program: Program) {
     termClasses.foreach {
       case (_, compTerms) =>
         val vec = compTerms.toArray
-        val size = vec.size
+        val size = vec.length
         vec.zipWithIndex.foreach {
           case (t1, j) =>
             (j + 1 until size).foreach { i =>

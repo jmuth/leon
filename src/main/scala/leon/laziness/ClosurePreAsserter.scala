@@ -150,7 +150,7 @@ class ClosurePreAsserter(p: Program) {
   }
 
   def apply: Program = {
-    if (!lemmas.isEmpty)
+    if (lemmas.nonEmpty)
       addFunDefs(p, lemmas ++ monoLemmas, anchorfd.get)
     else p
   }

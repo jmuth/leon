@@ -35,7 +35,7 @@ object SolverUtil {
         (id -> currModel(id))
       case (id, v) =>
         (id -> v)
-    }.toMap)
+    })
   }
 
   def toZ3SMTLIB(expr: Expr, filename: String,

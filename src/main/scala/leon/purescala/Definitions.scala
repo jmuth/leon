@@ -190,7 +190,7 @@ object Definitions {
     }.groupBy(_.parent.get.classDef)
 
     lazy val singleCaseClasses : Seq[CaseClassDef] = defs.collect {
-      case c : CaseClassDef if !c.parent.isDefined => c
+      case c : CaseClassDef if c.parent.isEmpty => c
     }
   }
 

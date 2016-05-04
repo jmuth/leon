@@ -109,13 +109,13 @@ class InputCoverage(fd: FunDef, fds: Set[FunDef])(implicit c: LeonContext, p: Pr
       }
       val (new_c, id_to_remove) = replaceFinalElse(c)
       (new_c, ids.map(_.filter(_ != id_to_remove)))
-    case Or(args) if args.length >= 1 =>
+    case Or(args) if args.nonEmpty =>
       val c = args.foldRight[Expr](BooleanLiteral(false).copiedFrom(e)){
         case (arg, prev) =>
           IfExpr(arg, BooleanLiteral(true), prev).copiedFrom(e)
       }
       markBranches(c.copiedFrom(e))
-    case And(args) if args.length >= 1  =>
+    case And(args) if args.nonEmpty  =>
       val c = args.foldRight[Expr](BooleanLiteral(true).copiedFrom(e)){
         case (arg, prev) =>
           IfExpr(Not(arg), BooleanLiteral(false), prev).copiedFrom(e)

@@ -26,8 +26,8 @@ class LazyFunctionsManager(p: Program) {
         //note: do not consider field invocations
         case f @ FunctionInvocation(TypedFunDef(callee, _), args) if callee.isRealFunction =>
           callees += callee
-          args map rec
-        case Operator(args, _) => args map rec
+          args foreach rec
+        case Operator(args, _) => args foreach rec
       }
       rec(inexpr)
       callees

@@ -203,7 +203,7 @@ class InputCoverageSuite extends LeonTestSuiteWithProgram with Matchers with Sca
     val expr = withCoveredFun1.body.get
     
     coverage.markBranches(expr) match {
-      case (res, Some(ids)) if ids.size > 0 =>
+      case (res, Some(ids)) if ids.nonEmpty =>
         withClue(res.toString) {
           fail(s"Should have not added any ids, but got $ids")
         }

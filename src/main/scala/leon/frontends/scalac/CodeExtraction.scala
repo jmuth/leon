@@ -2021,7 +2021,7 @@ trait CodeExtraction extends ASTExtractors {
         ArrayType(extractType(btt))
 
       // TODO: What about Function0?
-      case TypeRef(_, sym, subs) if subs.size >= 1 && isFunction(sym, subs.size - 1) =>
+      case TypeRef(_, sym, subs) if subs.nonEmpty && isFunction(sym, subs.size - 1) =>
         val from = subs.init
         val to   = subs.last
         FunctionType(from map extractType, extractType(to))

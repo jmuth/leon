@@ -51,7 +51,7 @@ object Algebra {
 
   /** Returns the gcd of a non-empty sequence of integers */
   def gcd(as: Seq[Int]): Int = {
-    require(as.length >= 1)
+    require(as.nonEmpty)
     if(as.length == 1)
       as.head.abs
     else {
@@ -89,7 +89,7 @@ object Algebra {
 
   /** Returns the gcd of a non-empty sequence of big integers */
   def gcd(as: Seq[BigInt]): BigInt = {
-    require(as.length >= 1)
+    require(as.nonEmpty)
     if(as.length == 1)
       as.head.abs
     else {
@@ -123,7 +123,7 @@ object Algebra {
 
   /** Returns the lcm of a sequence of integers */
   def lcm(as: Seq[Int]): Int = {
-    require(as.length >= 1)
+    require(as.nonEmpty)
     if(as.length == 1)
       as.head.abs
     else {
@@ -157,7 +157,7 @@ object Algebra {
 
   /** Returns the lcm of a sequence of big integers */
   def lcm(as: Seq[BigInt]): BigInt = {
-    require(as.length >= 1)
+    require(as.nonEmpty)
     if(as.length == 1)
       as(0).abs
     else {

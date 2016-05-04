@@ -31,7 +31,7 @@ class SolverPoolSuite extends LeonTestSuite {
     SolverFactory("dummy", () => new DummySolver(ctx.toSctx, Program.empty))
   }
 
-  val poolSize = 5;
+  val poolSize = 5
 
   test(s"SolverPool has at least $poolSize solvers") { implicit ctx =>
 

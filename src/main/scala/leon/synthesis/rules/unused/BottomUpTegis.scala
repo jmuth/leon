@@ -79,7 +79,7 @@ abstract class BottomUpTEGISLike(name: String) extends Rule(name) {
                 val ev = evaluator.compile(expr, args).get
 
                 { (vecs: Vector[Vector[Expr]]) =>
-                  val res = (0 to nTests-1).toVector.flatMap { i =>
+                  val res = (0 until nTests).toVector.flatMap { i =>
                     val inputs = new solvers.Model((args zip vecs.map(_(i))).toMap)
                     ev(inputs) match {
                       case EvaluationResults.Successful(out) => Some(out)

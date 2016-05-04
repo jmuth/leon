@@ -14,7 +14,7 @@ import leon.solvers.smtlib._
 import _root_.smtlib.interpreters.CVC4Interpreter
 
 class CVC4SygusSolver(ctx: LeonContext, pgm: Program, p: Problem) extends SygusSolver(ctx, pgm, p) with SMTLIBCVC4QuantifiedTarget {
-  override def targetName = "cvc4-sygus";
+  override def targetName = "cvc4-sygus"
 
   def interpreterOps(ctx: LeonContext) = {
     Seq(

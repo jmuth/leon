@@ -127,7 +127,7 @@ object ProgramUtil {
 
     val keys = funToTmpl.keySet ++ funToPost.keySet
     val userLevelFuns = userLevelFunctions(prog).toSet
-    if(!keys.diff(userLevelFuns).isEmpty)
+    if(keys.diff(userLevelFuns).nonEmpty)
       throw new IllegalStateException("AssignTemplate function called on library functions: "+ keys.diff(userLevelFuns))
 
     val funMap = userLevelFuns.foldLeft(Map[FunDef, FunDef]()) {

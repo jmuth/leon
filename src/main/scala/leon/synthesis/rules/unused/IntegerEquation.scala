@@ -29,7 +29,7 @@ case object IntegerEquation extends Rule("Integer Equation") {
     var eqxs: List[Identifier] = List()
 
     var optionNormalizedEq: Option[List[Expr]] = None
-    while(candidates.nonEmpty && optionNormalizedEq == None) {
+    while(candidates.nonEmpty && optionNormalizedEq.isEmpty) {
       val eq@Equals(_,_) = candidates.head
       candidates = candidates.tail
       

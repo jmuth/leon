@@ -357,7 +357,7 @@ object AntiAliasingPhase extends TransformationPhase {
           //this might be traversed several time in case of doubly nested fundef,
           //so we need to ignore the second times by checking if updatedFunDefs 
           //contains a mapping or not
-          val nfds = fds.map(fd => updatedFunDefs.get(fd).getOrElse(fd))
+          val nfds = fds.map(fd => updatedFunDefs.getOrElse(fd, fd))
           (Some(LetDef(nfds, body).copiedFrom(l)), context)
         }
 
@@ -393,7 +393,7 @@ object AntiAliasingPhase extends TransformationPhase {
 
         case fi@FunctionInvocation(fd, args) => {
 
-          val vis: Set[Identifier] = varsInScope.get(fd.fd).getOrElse(Set())
+          val vis: Set[Identifier] = varsInScope.getOrElse(fd.fd, Set())
           args.find({
             case Variable(id) => vis.contains(id)
             case _ => false
@@ -545,7 +545,7 @@ object AntiAliasingPhase extends TransformationPhase {
     def invocEffects(fi: FunctionInvocation): Set[Identifier] = {
       //TODO: the require should be fine once we consider nested functions as well
       //require(effects.isDefinedAt(fi.tfd.fd)
-      val mutatedParams: Set[Int] = effects.get(fi.tfd.fd).getOrElse(Set())
+      val mutatedParams: Set[Int] = effects.getOrElse(fi.tfd.fd, Set())
       functionInvocationEffects(fi, mutatedParams).toSet
     }
 
@@ -680,7 +680,7 @@ object AntiAliasingPhase extends TransformationPhase {
    */
   private def isMutationOf(expr: Expr, id: Identifier): Boolean = expr match {
     case ArrayUpdate(Variable(a), _, _) => a == id
-    case FieldAssignment(obj, _, _) => findReceiverId(obj).exists(_ == id)
+    case FieldAssignment(obj, _, _) => findReceiverId(obj).contains(id)
     case Application(callee, args) => {
       val ft@FunctionType(_, _) = callee.getType
       val effects = functionTypeEffects(ft)

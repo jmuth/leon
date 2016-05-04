@@ -325,7 +325,7 @@ object ExprOps extends GenTreeOps[Expr] {
     val bindings = args.map(id => id -> n.getId(id.toVariable)).toMap
     val normalized = n.transform(matchToIfThenElse(expr))(bindings)
 
-    val argsImgSet = bindings.map(_._2).toSet
+    val argsImgSet = bindings.values.toSet
     val bodySubst = n.subst.filter(p => !argsImgSet(p._1))
 
     (args.map(bindings), normalized, bodySubst)

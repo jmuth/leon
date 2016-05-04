@@ -34,7 +34,7 @@ trait LeonSolverSuite extends LeonTestSuiteWithProgram {
       }
     }
     def unknown: Unit = {
-      if (res != None) {
+      if (res.isDefined) {
         fail(s"Expected 'unknown', got '$resToString' from $solver")
       }
     }

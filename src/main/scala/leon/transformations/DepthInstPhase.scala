@@ -84,7 +84,7 @@ class DepthInstrumenter(p: Program, si: SerialInstrumenter) extends Instrumenter
   }
 
   def combineDepthIds(costofOp: Expr, subeInsts: Seq[Expr]): Expr = {
-    if (subeInsts.size == 0) costofOp
+    if (subeInsts.isEmpty) costofOp
     else if (subeInsts.size == 1) Plus(costofOp, subeInsts(0))
     else {
       //optimization: remove duplicates from 'subeInsts' as 'max' is an idempotent operation

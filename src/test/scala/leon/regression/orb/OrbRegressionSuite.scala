@@ -29,7 +29,7 @@ class OrbRegressionSuite extends LeonRegressionSuite {
       fail(s"Nothing was solved")
     else {
       val fails = report.conditions.filterNot(_.prettyInv.isDefined)
-      if (!fails.isEmpty)
+      if (fails.nonEmpty)
         fail(s"Inference failed for functions ${fails.map(_.fd).mkString("\n")}")
     }
   }

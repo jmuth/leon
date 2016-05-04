@@ -71,7 +71,7 @@ class CConverter(val ctx: LeonContext, val prog: Program) {
     // Only process the main unit
     val (mainUnits, _) = prog.units partition { _.isMainUnit }
 
-    if (mainUnits.size == 0) fatalError("No main unit in the program")
+    if (mainUnits.isEmpty) fatalError("No main unit in the program")
     if (mainUnits.size >= 2) fatalError("Multiple main units in the program")
 
     val mainUnit = mainUnits.head
@@ -197,8 +197,8 @@ class CConverter(val ctx: LeonContext, val prog: Program) {
       if (cd.isAbstract)         fatalError("Abstract types are not supported")
       if (cd.hasParent)          fatalError("Inheritance is not supported")
       if (cd.isCaseObject)       fatalError("Case Objects are not supported")
-      if (cd.tparams.length > 0) fatalError("Type Parameters are not supported")
-      if (cd.methods.length > 0) fatalError("Methods are not yet supported")
+      if (cd.tparams.nonEmpty) fatalError("Type Parameters are not supported")
+      if (cd.methods.nonEmpty) fatalError("Methods are not yet supported")
 
       val id     = convertToId(cd.id)
       val fields = cd.fields map convertToVar

@@ -133,7 +133,7 @@ object LazyExpressionLifter {
           val nfd = fdmap(fd)
           val fliter =
             if (createUniqueIds && needsId(fd)) {
-              if (!anchorDef.isDefined)
+              if (anchorDef.isEmpty)
                 anchorDef = Some(nfd)
               val initRef = nfd.params.last.id.toVariable
               Some(getFreeListIterator(initRef))
@@ -160,8 +160,8 @@ object LazyExpressionLifter {
     val progWithClasses =
       if (createUniqueIds) ProgramUtil.addDefs(progWithFuns, fvClasses, anchorDef.get)
       else progWithFuns
-    if (!newfuns.isEmpty) {
-      val modToNewDefs = newfuns.values.groupBy(_._2).map { case (k, v) => (k, v.map(_._1)) }.toMap
+    if (newfuns.nonEmpty) {
+      val modToNewDefs = newfuns.values.groupBy(_._2).map { case (k, v) => (k, v.map(_._1)) }
       appendDefsToModules(progWithClasses, modToNewDefs)
     } else
       progWithClasses

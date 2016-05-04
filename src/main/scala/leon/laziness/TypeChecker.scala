@@ -63,14 +63,14 @@ object TypeChecker {
                     // choose the subtype of the `expType` that
                     // has the same constructor as `ict`
                     val ntype = subcast(ict, expType.asInstanceOf[ClassType])
-                    if (!ntype.isDefined)
+                    if (ntype.isEmpty)
                       throw new IllegalStateException(s"Cannot find subtype of $expType with name: ${ict.classDef.id.toString}")
                     val nbopt = bopt.map(makeIdOfType(_, ntype.get))
                     (InstanceOfPattern(nbopt, ntype.get), ntype.get)
 
                   case CaseClassPattern(bopt, ict, subpats) =>
                     val ntype = subcast(ict, expType.asInstanceOf[ClassType])
-                    if (!ntype.isDefined)
+                    if (ntype.isEmpty)
                       throw new IllegalStateException(s"Cannot find subtype of $expType with name: ${ict.classDef.id.toString}")
                     val cct = ntype.get.asInstanceOf[CaseClassType]
                     val nbopt = bopt.map(makeIdOfType(_, cct))

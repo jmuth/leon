@@ -14,9 +14,7 @@ import purescala.Common._
 import purescala.Expressions._
 import purescala.Definitions._
 import solvers.TimeoutableSolverFactory
-import solvers.{PartialModel, SolverFactory}
-import purescala.DefOps
-import solvers.{PartialModel, Model, SolverFactory, SolverContext}
+import solvers.{PartialModel, SolverFactory, SolverContext}
 import solvers.unrolling.UnrollingProcedure
 import scala.collection.mutable.{Map => MutableMap}
 import scala.concurrent.duration._
@@ -648,7 +646,7 @@ abstract class RecursiveEvaluator(ctx: LeonContext, prog: Program, val bank: Eva
                   }
                 }
 
-                val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.map(_._2).flatten)
+                val domainMap = quantifierDomains.groupBy(_._1).mapValues(_.flatMap(_._2))
                 andJoin(domainMap.toSeq.map { case (id, dom) =>
                   orJoin(dom.toSeq.map { case (path, value) =>
                     // @nv: Equality with variable is ok, see [[leon.codegen.runtime.Monitor]]

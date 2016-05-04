@@ -417,7 +417,7 @@ object LetTupleSimplification {
 
     val allLeaves = getLeaves(e, true)
     // Here the expression is not of the form we are currently simplifying
-    if (allLeaves.size == 0) e
+    if (allLeaves.isEmpty) e
     else {
       // fold constants here
       val allConstantsOpped = allLeaves.foldLeft(identity)((acc, e) => e match {
@@ -434,7 +434,7 @@ object LetTupleSimplification {
       if (allConstantsOpped != identity) {
         allNonConstants.foldLeft(InfiniteIntegerLiteral(allConstantsOpped): Expr)((acc: Expr, currExpr) => makeTree(acc, currExpr))
       } else {
-        if (allNonConstants.size == 0) InfiniteIntegerLiteral(identity)
+        if (allNonConstants.isEmpty) InfiniteIntegerLiteral(identity)
         else {
           allNonConstants.tail.foldLeft(allNonConstants.head)((acc: Expr, currExpr) => makeTree(acc, currExpr))
         }

@@ -132,9 +132,9 @@ class LazyClosureConverter(p: Program, ctx: LeonContext,
         val tparams = (v.params.map(_.getType) :+ v.returnType).flatMap(getTypeParameters(_)).distinct
         val tparamsDef = tparams.map(TypeParameterDef(_))
         val ufd = new FunDef(FreshIdentifier(v.id.name + "UI"), tparamsDef, v.params, v.returnType)
-        (k -> (ufd, None))
+        (k ->(ufd, None))
       }
-  }.toMap
+  }
 
   /**
    * A set of uninterpreted functions that return fixed but uninterpreted states
@@ -266,7 +266,7 @@ class LazyClosureConverter(p: Program, ctx: LeonContext,
       fun.body = Some(TupleSelect(invoke, 1))
       fun.addFlag(IsInlined)
       (tname -> fun)
-  }.toMap
+  }
 
   /**
    * Create closure construction functions that ensures a postcondition.

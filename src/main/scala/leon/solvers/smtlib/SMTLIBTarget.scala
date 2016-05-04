@@ -222,8 +222,8 @@ trait SMTLIBTarget extends Interruptible {
 
       val elems = r.elems.flatMap {
         case (k, CaseClass(leonSome, Seq(x))) => Some(k -> x)
-        case (k, _)                           => None
-      }.toMap
+        case (k, _) => None
+      }
       FiniteMap(elems, from, to)
 
     case other =>
@@ -490,7 +490,7 @@ trait SMTLIBTarget extends Interruptible {
 
         toSMT(RawArrayValue(from, elems.map {
           case (k, v) => k -> CaseClass(library.someType(to), Seq(v))
-        }.toMap, CaseClass(library.noneType(to), Seq())))
+        }, CaseClass(library.noneType(to), Seq())))
 
       case MapApply(m, k) =>
         val mt @ MapType(_, to) = m.getType
@@ -810,7 +810,7 @@ trait SMTLIBTarget extends Interruptible {
               finiteArray(definedElements, Some(default, IntLiteral(size)), baseType)
 
             } else {
-              val entries = for (i <- 0 to size - 1) yield elems.getOrElse(IntLiteral(i), default)
+              val entries = for (i <- 0 until size) yield elems.getOrElse(IntLiteral(i), default)
 
               finiteArray(entries, None, baseType)
             }

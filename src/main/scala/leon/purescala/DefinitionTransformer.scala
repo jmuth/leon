@@ -136,7 +136,7 @@ class DefinitionTransformer(
 
     val (fdsToDup: Set[FunDef], cdsToDup: Set[ClassDef]) = {
       val prevTransformed = cdMap.aSet.filter(a => a ne cdMap.toB(a)) ++ fdMap.aSet.filter(a => a ne fdMap.toB(a))
-      val reqs = req ++ transformedCds.map(_._1) ++ transformedFds.map(_._1) ++ prevTransformed
+      val reqs = req ++ transformedCds.keys ++ transformedFds.keys ++ prevTransformed
 
       val cdsToDup = cds filter { cd => req(cd) ||
         (!(transformedCds contains cd) && (dependencies(cd) & reqs).nonEmpty) ||
@@ -150,8 +150,8 @@ class DefinitionTransformer(
       (fdsToDup, cdsToDup)
     }
 
-    val fdsToTransform = (transformedFds.map(_._1) filterNot fdsToDup).toSet
-    val cdsToTransform = (transformedCds.map(_._1) filterNot cdsToDup).toSet
+    val fdsToTransform = (transformedFds.keys filterNot fdsToDup).toSet
+    val cdsToTransform = (transformedCds.keys filterNot cdsToDup).toSet
 
     val fdsToKeep = fds filterNot (fd => fdsToDup(fd) || fdsToTransform(fd))
     val cdsToKeep = cds filterNot (cd => cdsToDup(cd) || cdsToTransform(cd))

@@ -202,7 +202,7 @@ class QuantificationManager[T](encoder: TemplateEncoder[T]) extends LambdaManage
 
           (handled zip prev) ++ uIds
         }
-      }.toMap
+      }
 
       ids.map(mapping)
     }
@@ -221,7 +221,7 @@ class QuantificationManager[T](encoder: TemplateEncoder[T]) extends LambdaManage
   def isQuantifier(idT: T): Boolean = abstractNormalizer.contains(idT)
 
   override def assumptions: Seq[T] = super.assumptions ++
-    quantifications.collect { case q: Quantification => q.currentQ2Var }.toSeq
+    quantifications.collect { case q: Quantification => q.currentQ2Var }
 
   def typeInstantiations: Map[TypeTree, Matchers] = instCtx.map.instantiations.collect {
     case (TypeKey(tpe), matchers) => tpe -> matchers
@@ -260,7 +260,7 @@ class QuantificationManager[T](encoder: TemplateEncoder[T]) extends LambdaManage
 
     def +(p: (Set[T], Matcher[T])): Context = if (apply(p)) this else {
       val prev = ctx.getOrElse(p._2, Set.empty)
-      val newSet = prev.filterNot(set => p._1.subsetOf(set)).toSet + p._1
+      val newSet = prev.filterNot(set => p._1.subsetOf(set)) + p._1
       new Context(ctx + (p._2 -> newSet))
     }
 
@@ -886,7 +886,7 @@ class QuantificationManager[T](encoder: TemplateEncoder[T]) extends LambdaManage
             }
 
             def extractArgs(args: Seq[Arg[T]]): Seq[Arg[T]] =
-              (0 until args.size).map(i => args(positions.getOrElse(i, i)))
+              args.indices.map(i => args(positions.getOrElse(i, i)))
 
             instantiation ++= instCtx.instantiate(Set.empty, sm.copy(args = extractArgs(sm.args)))(quantifications.toSeq : _*)
             instantiation ++= instCtx.instantiate(Set.empty, pm.copy(args = extractArgs(pm.args)))(quantifications.toSeq : _*)
@@ -1052,17 +1052,17 @@ class QuantificationManager[T](encoder: TemplateEncoder[T]) extends LambdaManage
 
     def getPartialModel: PartialModel = {
       val typeDomains: Map[TypeTree, Set[Seq[Expr]]] = typeInstantiations.map {
-        case (tpe, domain) => tpe -> domain.flatMap { case (b, m) => extract(b, m) }.toSet
+        case (tpe, domain) => tpe -> domain.flatMap { case (b, m) => extract(b, m) }
       }
 
       val lambdaDomains: Map[Lambda, Set[Seq[Expr]]] = lambdaInstantiations.map {
-        case (l, domain) => l -> domain.flatMap { case (b, m) => extract(b, m) }.toSet
+        case (l, domain) => l -> domain.flatMap { case (b, m) => extract(b, m) }
       }
 
       val domains = new Domains(lambdaDomains, typeDomains)
 
       val partialDomains: Map[T, Set[Seq[Expr]]] = partialInstantiations.map {
-        case (t, domain) => t -> domain.flatMap { case (b, m) => extract(b, m) }.toSet
+        case (t, domain) => t -> domain.flatMap { case (b, m) => extract(b, m) }
       }
 
       def extractElse(body: Expr): Expr = body match {

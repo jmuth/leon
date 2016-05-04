@@ -48,7 +48,7 @@ class LinearRelationEvaluator(ctx: InferenceContext) {
     def eval: (Expr => Option[Boolean]) = {
       case And(args) =>
         val argres = args.map(eval)
-        if (argres.exists(!_.isDefined)) None
+        if (argres.exists(_.isEmpty)) None
         else
           Some(argres.forall(_.get))
       case Equals(Variable(id1), Variable(id2)) =>

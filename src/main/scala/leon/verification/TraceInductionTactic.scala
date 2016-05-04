@@ -130,7 +130,7 @@ class TraceInductionTactic(vctx: VerificationContext) extends Tactic(vctx) {
                   // create a tactFun invocation to mimic the recursion pattern
                   val indexedArgs = framePositions.map {
                     case (f, i) => paramIndex(f) -> args(i)
-                  }.toMap ++ indexedFootprint
+                  } ++ indexedFootprint
                   val recArgs = (0 until indexedArgs.size).map(indexedArgs)
                   val recCall = FunctionInvocation(TypedFunDef(tactFun, tactFun.tparams.map(_.tp)), recArgs)
                   createAnd(Seq(argPattern, recCall))

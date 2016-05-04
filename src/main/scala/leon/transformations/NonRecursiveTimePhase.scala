@@ -44,8 +44,8 @@ class TPRInstrumenter(p: Program, si: SerialInstrumenter) extends Instrumenter(p
         emap(fd) :+= inst
       else emap.update(fd, List(inst))
     }
-    tprFuncs.map(fd => update(fd, TPR))
-    timeFuncs.map(fd => update(fd, Time))
+    tprFuncs.foreach(fd => update(fd, TPR))
+    timeFuncs.foreach(fd => update(fd, Time))
     emap.toMap
   }
 

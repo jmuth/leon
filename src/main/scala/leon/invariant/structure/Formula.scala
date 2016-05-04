@@ -111,7 +111,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
           case v: Variable if disjuncts.contains(v) => v
           case v: Variable if conjuncts.contains(v) => throw new IllegalStateException("or gaurd inside conjunct: " + e + " or-guard: " + v)
           case arg =>
-            val g = addToDisjunct(atoms(arg), !getTemplateIds(arg).isEmpty)
+            val g = addToDisjunct(atoms(arg), getTemplateIds(arg).nonEmpty)
             //println(s"creating a new OR blocker $g for "+atoms)
             g
         }
@@ -125,14 +125,14 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
         //if the expression has template variables then we separate it using guards
         val (nonparams, params) = (args map rec).partition(getTemplateIds(_).isEmpty)
         val newargs =
-          if (!params.isEmpty)
+          if (params.nonEmpty)
             addToDisjunct(params, true) +: nonparams
           else nonparams
         createAnd(newargs)
 
       case e : IfExpr =>
         val (con, th, elze) = (rec(e.cond)(true), rec(e.thenn)(false), rec(e.elze)(false))
-        if(!isAtom(con) || !getTemplateIds(con).isEmpty)
+        if(!isAtom(con) || getTemplateIds(con).nonEmpty)
           throw new IllegalStateException(s"Condition of ifexpr is not an atom: $e")
        // create condition and anti-condition blockers
        val ncond = addToDisjunct(Seq(con), false)
@@ -158,7 +158,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
     val rootvar = f1 match {
       case v: Variable if(conjuncts.contains(v)) => v
       case v: Variable if(disjuncts.contains(v)) => throw new IllegalStateException("f1 is a disjunct guard: "+v)
-      case _ => addToDisjunct(atoms(f1), !getTemplateIds(f1).isEmpty)
+      case _ => addToDisjunct(atoms(f1), getTemplateIds(f1).nonEmpty)
     }
     (rootvar, newDisjGuards)
   }
@@ -248,7 +248,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
 
   def templateIdsInFormula = paramBlockers.flatMap { g =>
     getTemplateIds(createAnd(disjuncts(g).map(_.toExpr)))
-  }.toSet
+  }
 
   /**
    * The first return value is param part and the second one is the
@@ -286,8 +286,8 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
     // simplify blockers if we can, and close the map
     val blockMap = substClosure(disjuncts.collect {
       case (g, Seq(ctr)) if !paramBlockers(g) => (g.id -> ctr.toExpr)
-      case (g, Seq())                         => (g.id -> tru)
-    }.toMap)
+      case (g, Seq()) => (g.id -> tru)
+    })
     val conjs = conjuncts.map {
       case (g, rhs) => replaceFromIDs(blockMap, combiningOp(g, rhs))
     }.toSeq ++ roots.map(replaceFromIDs(blockMap, _))
@@ -302,7 +302,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
     var freevars = Set[Identifier]()
     flatRest.foreach{
       case (g, rhs) =>
-        val fvs = variablesOf(rhs).toSet
+        val fvs = variablesOf(rhs)
         val candUniques = fvs -- sharedVars
         val newShared = uniqueVars.intersect(candUniques)
         freevars ++= fvs
@@ -311,14 +311,14 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
     }
     // unflatten rest
     var flatIdMap = blockMap
-    val unflatRest = (flatRest collect {
+    val unflatRest = flatRest collect {
       case (g, rhs) =>
         // note: we call simple unflatten in the presence of if-then-else because it will not have flat-ids transcending then and else branches
         val (unflatRhs, idmap) = simpleUnflattenWithMap(rhs, sharedVars, includeFuns = false)
         // sanity checks
         if (debugUnflatten) {
           val rhsvars = variablesOf(rhs)
-          if(!rhsvars.filter(TemplateIdFactory.IsTemplateIdentifier).isEmpty)
+          if (rhsvars.exists(TemplateIdFactory.IsTemplateIdentifier))
             throw new IllegalStateException(s"Non-param part has template identifiers ${toString}")
           val seenKeys = flatIdMap.keySet.intersect(rhsvars)
           if (!seenKeys.isEmpty)
@@ -326,7 +326,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
         }
         flatIdMap ++= idmap
         combiningOp(g, unflatRhs)
-    }).toSeq
+    }
 
     val modelCons = (m: Model, eval: DefaultEvaluator) => new FlatModel(freevars, flatIdMap, m, eval)
 
@@ -418,7 +418,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
     val satdisj =
       if (unflatSat == Some(true))
         Some(pickSatDisjunct(firstRoot, new SimpleLazyModel(unflatModel),
-            tempMap.map{ case (Variable(id), v) => id -> v }.toMap, eval))
+            tempMap.map { case (Variable(id), v) => id -> v }, eval))
       else None
     if (unflatSat != flatSat) {
       if (satdisj.isDefined) {
@@ -447,7 +447,7 @@ class Formula(val fd: FunDef, initexpr: Expr, ctx: InferenceContext, initSpecCal
             Seq(id)
           case _ => Seq()
         }
-        if (!diffs.isEmpty)
+        if (diffs.nonEmpty)
           throw new IllegalStateException("Model do not agree on diffs: " + diffs)
       }
     }

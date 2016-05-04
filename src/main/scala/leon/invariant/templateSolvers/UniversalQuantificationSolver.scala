@@ -99,8 +99,8 @@ class UniversalQuantificationSolver(ctx: InferenceContext, program: Program,
         case (fd, FunData(_, _, rest)) =>
           val vcSolver = solverFactory.getNewSolver()
           vcSolver.assertCnstr(rest)
-          (fd -> vcSolver)
-      }.toMap
+          fd -> vcSolver
+      }
     } else Map[FunDef, Solver with TimeoutSolver]()
 
   def free = {

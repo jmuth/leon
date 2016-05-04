@@ -33,7 +33,7 @@ class CegisSolver(ctx: InferenceContext, program: Program,
       }).toSeq)
 
     } else tru
-    val formula = createOr(funcs.map(getVCForFun _).toSeq)
+    val formula = createOr(funcs.map(getVCForFun _))
     //using reals with bounds does not converge and also results in overflow
     val (res, _, model) = (new CegisCore(ctx, program, timeout, this)).solve(tempIds, formula, initCtr, solveAsInt = true)
     res match {

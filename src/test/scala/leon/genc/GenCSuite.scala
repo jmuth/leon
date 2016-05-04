@@ -175,7 +175,7 @@ class GenCSuite extends LeonRegressionSuite {
   }
 
   protected def testValid(cc: String) = testDirectory(cc, "valid")
-  protected def testUnverified(cc: String) = testDirectory(cc, "unverified");
+  protected def testUnverified(cc: String) = testDirectory(cc, "unverified")
 
   protected def testInvalid() = forEachFileIn("invalid") { (xCtx, prog) =>
     intercept[LeonFatalError] {

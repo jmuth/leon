@@ -31,7 +31,7 @@ object XLangCleanupPhase extends TransformationPhase {
 
     val transformer = new DefinitionTransformer {
       override def transformType(tpe: TypeTree): Option[TypeTree] = tpe match {
-        case (tt: TupleType) if tt.bases.exists(_ == UnitType) => 
+        case (tt: TupleType) if tt.bases.contains(UnitType) =>
           Some(tupleTypeWrap(tt.bases.filterNot(_ == UnitType)))
         case _ => None
       }

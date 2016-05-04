@@ -38,7 +38,7 @@ final class Functions(context: LeonContext, program: Program, types: Types, funs
 
   private val relevant = closure(funs.toSet).toList
 
-  private val preGroups = program.callGraph.stronglyConnectedComponents.map(_.filter(relevant.contains)).filterNot(_.isEmpty).toSet
+  private val preGroups = program.callGraph.stronglyConnectedComponents.map(_.filter(relevant.contains)).filterNot(_.isEmpty)
   private val callGraph = preGroups.map { group => group ->
     preGroups.filter(cand => cand.exists(to => group.exists(from => program.callGraph.calls(from, to))) && cand != group)
   }.toMap

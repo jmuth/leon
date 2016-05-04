@@ -1,6 +1,6 @@
 /* Copyright 2009-2016 EPFL, Lausanne */
 
-package leon.unit.utils
+package leon.unit.purescala
 
 import leon.test._
 import leon.purescala.Common._
@@ -150,7 +150,7 @@ class FunctionClosureSuite extends FunSuite with helpers.ExpressionsDSL {
         assert(cfd.returnType === nested.returnType)
         assert(cfd.params.size === 2)
         assert(freeVars(cfd).isEmpty)
-        assert(cfd.precondition != None)
+        assert(cfd.precondition.isDefined)
         //next assert is assuming that the function closures always adds paramters at the end of the parameter list
         cfd.precondition.foreach(pre => assert(pre == GreaterEquals(cfd.params.last.toVariable, bi(0)))) 
       } else {
@@ -253,7 +253,7 @@ class FunctionClosureSuite extends FunSuite with helpers.ExpressionsDSL {
         assert(cfd.returnType === caller.returnType)
         assert(cfd.params.size === 1)
         assert(freeVars(cfd).isEmpty)
-        assert(cfd.precondition != None)
+        assert(cfd.precondition.isDefined)
         //next assert is assuming that the function closures always adds paramters at the end of the parameter list
         cfd.precondition.foreach(pre => assert(pre == GreaterEquals(cfd.params.last.toVariable, bi(0)))) 
       } else {

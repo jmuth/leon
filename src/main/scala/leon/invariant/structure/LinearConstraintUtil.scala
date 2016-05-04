@@ -302,7 +302,7 @@ object LinearConstraintUtil {
         lc.template match {
           case eq: Equals =>
             idsWithEquality ++= vars
-            if (!elimVars.isEmpty)
+            if (elimVars.nonEmpty)
               eqctrs += lc
             else restctrs += lc
           // choose all vars whose coefficient is either 1 or -1

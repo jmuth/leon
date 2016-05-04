@@ -18,7 +18,7 @@ case class BoundedStrategy(underlying: Strategy, bound: Int) extends WrappedStra
   }
 
   override def afterExpand(n: Node) = {
-    super.afterExpand(n);
+    super.afterExpand(n)
     nSteps += 1
   }
 }

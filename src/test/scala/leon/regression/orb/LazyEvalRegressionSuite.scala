@@ -28,18 +28,18 @@ class LazyEvalRegressionSuite extends LeonRegressionSuite {
       case None => fail(s"No state verification report found!")
       case Some(rep) =>
         val fails = rep.vrs.collect{ case (vc, vr) if !vr.isValid => vc }
-        if (!fails.isEmpty)
+        if (fails.nonEmpty)
           fail(s"State verification failed for functions ${fails.map(_.fd).mkString("\n")}")
     }
     report.resourceVeri match {
       case None => fail(s"No resource verification report found!")
       case Some(rep: InferenceReport) =>
         val fails = rep.conditions.filterNot(_.prettyInv.isDefined)
-        if (!fails.isEmpty)
+        if (fails.nonEmpty)
           fail(s"Inference failed for functions ${fails.map(_.fd).mkString("\n")}")
       case Some(rep: VerificationReport) =>
         val fails = rep.vrs.collect{ case (vc, vr) if !vr.isValid => vc }
-        if (!fails.isEmpty)
+        if (fails.nonEmpty)
           fail(s"Resource verification failed for functions ${fails.map(_.fd).mkString("\n")}")
     }
   }
