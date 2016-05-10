@@ -2,7 +2,7 @@
 
 package leon
 package synthesis
-package rules.unused
+package rules
 
 import purescala.Types._
 import grammars._
